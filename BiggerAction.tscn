@@ -113,6 +113,7 @@ position = Vector2(508, 80)
 script = ExtResource("6_4qnw1")
 zoom = Vector2(0.55, 0.55)
 tween_resource = SubResource("Resource_g78yk")
+draw_limits = true
 limit_bottom = 2000
 
 [node name="Wall" type="StaticBody2D" parent="PlayableLayer"]
