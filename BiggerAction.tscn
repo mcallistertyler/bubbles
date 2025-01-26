@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cw3fytedhcond"]
+[gd_scene load_steps=31 format=3 uid="uid://cw3fytedhcond"]
 
 [ext_resource type="PackedScene" uid="uid://bang5x2fmjbqa" path="res://Bubble.tscn" id="1_qb4lu"]
 [ext_resource type="Script" path="res://bigger_action.gd" id="1_x3owy"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://speed_label.gd" id="12_1owby"]
 [ext_resource type="Script" path="res://points_label.gd" id="12_8cai6"]
 [ext_resource type="Script" path="res://spawner.gd" id="14_rlfbp"]
+[ext_resource type="PackedScene" uid="uid://4g0omo5v0u77" path="res://waffle.tscn" id="17_gws7k"]
 [ext_resource type="AudioStream" uid="uid://dnl7c0y7gksmy" path="res://audio/background-music.mp3" id="18_tcloy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6rmyk"]
@@ -255,6 +256,7 @@ scroll_active = false
 script = ExtResource("14_rlfbp")
 possible_suckable_nodes = Array[PackedScene]([ExtResource("9_sdarn"), ExtResource("10_2m3hi"), ExtResource("11_2k140")])
 possible_ouch_nodes = ExtResource("10_8kk5q")
+possible_waffles = ExtResource("17_gws7k")
 spawn_marker_path_start = NodePath("../PlayableLayer/SpawnMarkerStart")
 spawn_marker_path_end = NodePath("../PlayableLayer/SpawnMarkerEnd")
 gameplay_area_path = NodePath("../PlayableLayer")

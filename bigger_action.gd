@@ -16,6 +16,7 @@ func display_death_text() -> void:
 	death_text.visible = true
 
 func fade_to_black() -> void:
+	death_text.text = "[center][wave amp=50.0 freq=5.0 connected=1]BUBBLE DIED ON THE WAY BACK TO HIS HOME PLANET. YOU SCORED " + str(Autoload.current_points) + " ![/wave][/center]"
 	var fade_tween = get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_parallel(false)
 	fade_tween.tween_property(death_rect, "color", Color(0.0, 0.0, 0.0, 1.0), 2.0)
 	fade_tween.tween_callback(display_death_text)

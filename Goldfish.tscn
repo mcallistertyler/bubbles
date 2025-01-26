@@ -10,3 +10,4 @@ radius = 70.0
 scale_sprite = Vector2(5, 5)
 sprite_path = ExtResource("3_b3hms")
 current_speed = 100.0
+is_waffle = false

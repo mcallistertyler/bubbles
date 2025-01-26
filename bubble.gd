@@ -9,6 +9,9 @@ extends CharacterBody2D
 @onready var blow_up_timer : Timer = get_node("%BlowUpTimer")
 @onready var go_label : RichTextLabel = get_node("%GoLabel")
 @onready var what_to_do_label : RichTextLabel = get_node("%WhatToDoLabel")
+@onready var invincible_timer : Timer = get_node("%InvincibleTimer")
+@onready var animation_player : AnimationPlayer = get_node("%AnimationPlayer")
+@onready var damage_timer : Timer = get_node("%DamageTimeout")
 var movement_vector : Vector2 = Vector2.ZERO
 
 @export var initial_blow_up_power : float = 0.25
@@ -36,6 +39,8 @@ var timer_started : bool = false
 @onready var blow_up_over : bool = true
 var killed_go_label : bool = false
 var killed_to_do_label : bool = false
+var takes_damage : bool = true
+var is_invincible : bool = false
 signal is_dead
 
 func _ready() -> void:
@@ -57,6 +62,13 @@ func absorbed_stuff() -> void:
 				absorb_tween.tween_property(absorbed_object, "scale", Vector2(0.2, 0.2), 0.3)
 			absorbed_object.move_towards_point(bubble_center.global_position)
 
+func become_invincible() -> void:
+	if invincible_timer.is_stopped():
+		invincible_timer.start()
+	else:
+		print("setting timeout back to 3 seconds")
+		invincible_timer.wait_time = 3.0
+
 func kill_go_label() -> void:
 	killed_go_label = true
 	if is_instance_valid(killed_go_label):
@@ -68,8 +80,15 @@ func kill_what_to_do_label() -> void:
 		what_to_do_label.queue_free()
 
 func _physics_process(delta: float) -> void:
+	if !damage_timer.is_stopped():
+		takes_damage = false
 	if bubble_sprite.scale.x <= 0.1 and !he_dead:
 		time_to_die()
+	if invincible_timer.is_stopped() and is_invincible:
+		become_invincible()
+		if !animation_player.is_playing():
+			animation_player.play("invincible")
+		
 	if blow_up_over and !he_dead:
 		if !killed_to_do_label:
 			var text_tween = get_tree().create_tween()
@@ -106,6 +125,9 @@ func _on_suck_area_area_entered(area: Area2D) -> void:
 					var suck_object = area.get_suck_object()
 					if !absorbed_objects.has(suck_object):
 						suck_object.play_death()
+						if suck_object.is_waffle:
+							print("ATE WAFFLE")
+							is_invincible = true
 						Autoload.increase_points(suck_object.points)
 						absorbed_objects.push_back(suck_object)
 						current_tween = get_tree().create_tween().set_parallel(true)
@@ -113,8 +135,19 @@ func _on_suck_area_area_entered(area: Area2D) -> void:
 						current_tween.tween_property(body_collision, "scale", Vector2(body_collision.scale.x + absorb_size_increase, body_collision.scale.y + absorb_size_increase), 0.05).set_ease(Tween.EASE_IN_OUT)
 						current_tween.tween_property(suck_collision, "scale", Vector2(suck_collision.scale.x + absorb_size_increase, suck_collision.scale.y + absorb_size_increase), 0.05).set_ease(Tween.EASE_IN_OUT)
 						increase_bubble_size_and_speed()
-	if area is OuchArea2D:
+	if area is OuchArea2D and !is_invincible and takes_damage:
 		current_tween = get_tree().create_tween().set_parallel(true)
 		current_tween.tween_property(bubble_sprite, "scale", Vector2(bubble_sprite.scale.x - absorb_size_decrease, bubble_sprite.scale.y - absorb_size_decrease), 0.05).set_ease(Tween.EASE_IN_OUT)
 		current_tween.tween_property(body_collision, "scale", Vector2(body_collision.scale.x - absorb_size_decrease, body_collision.scale.y - absorb_size_decrease), 0.05).set_ease(Tween.EASE_IN_OUT)
 		current_tween.tween_property(suck_collision, "scale", Vector2(suck_collision.scale.x - absorb_size_decrease, suck_collision.scale.y - absorb_size_decrease), 0.05).set_ease(Tween.EASE_IN_OUT)
+		if damage_timer.is_stopped():
+			damage_timer.start()
+
+func _on_invincible_timer_timeout() -> void:
+	print("ending invincible")
+	animation_player.play("RESET")
+	is_invincible = false
+
+
+func _on_damage_timeout_timeout() -> void:
+	takes_damage = true

@@ -11,3 +11,4 @@ points = 30
 scale_sprite = Vector2(10, 10)
 sprite_path = ExtResource("2_c66vr")
 current_speed = 100.0
+is_waffle = null

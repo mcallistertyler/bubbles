@@ -14,6 +14,7 @@ var go_to_point = null
 @export var current_speed : float = 400.0
 @export var speed_multiplier : float = 1.0
 @export var speed_increment : float = 0.05
+@export var is_waffle : bool = false
 
 func _ready() -> void:
 	Autoload.connect("increase_speed", _increase_speed)
@@ -43,6 +44,7 @@ func _physics_process(delta: float) -> void:
 			tween.tween_property(self, "global_position", self.go_to_point, 0.3).set_ease(Tween.EASE_IN_OUT)
 		else:
 			self.global_position.y += current_speed * speed_multiplier * delta
+		#if self.scale == Vector2
 
 func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
 	self.queue_free()

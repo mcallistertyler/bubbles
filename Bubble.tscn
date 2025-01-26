@@ -17,41 +17,42 @@ radius = 203.06
 [sub_resource type="CircleShape2D" id="CircleShape2D_lh441"]
 radius = 256.0
 
-[sub_resource type="Animation" id="Animation_qocut"]
-resource_name = "spin"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("BubbleSprite:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 6.28319]
-}
-
 [sub_resource type="Animation" id="Animation_1h1he"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("BubbleSprite:rotation")
+tracks/0/path = NodePath("BubbleSprite:material:shader_parameter/circle_color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [Color(0.3, 0.5, 1, 0.7)]
+}
+
+[sub_resource type="Animation" id="Animation_qocut"]
+resource_name = "invincible"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BubbleSprite:material:shader_parameter/circle_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.3, 0.5, 1, 0.7), Color(0.94902, 0.501961, 1, 0.701961), Color(0.879631, 0.627726, 0.229556, 0.701743), Color(0.0533637, 0.760198, 0.605516, 0.701525), Color(0.595439, 0.106896, 0.647059, 0.701961)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uonsx"]
 _data = {
 "RESET": SubResource("Animation_1h1he"),
-"spin": SubResource("Animation_qocut")
+"invincible": SubResource("Animation_qocut")
 }
 
 [node name="Bubble" type="CharacterBody2D"]
@@ -60,16 +61,17 @@ script = ExtResource("1_jpstm")
 
 [node name="BubbleSprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-modulate = Color(2, 2, 2, 1)
 material = SubResource("ShaderMaterial_8mya4")
 texture = ExtResource("2_26vjr")
 
 [node name="BodyCollision" type="CollisionShape2D" parent="."]
 unique_name_in_owner = true
+visible = false
 shape = SubResource("CircleShape2D_45lyi")
 
 [node name="SuckArea" type="Area2D" parent="."]
 unique_name_in_owner = true
+visible = false
 
 [node name="SuckCollision" type="CollisionShape2D" parent="SuckArea"]
 unique_name_in_owner = true
@@ -115,9 +117,22 @@ fit_content = true
 scroll_active = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_uonsx")
 }
-autoplay = "spin"
+speed_scale = 2.0
+
+[node name="InvincibleTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 3.0
+one_shot = true
+
+[node name="DamageTimeout" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.2
+one_shot = true
 
 [connection signal="area_entered" from="SuckArea" to="." method="_on_suck_area_area_entered"]
+[connection signal="timeout" from="InvincibleTimer" to="." method="_on_invincible_timer_timeout"]
+[connection signal="timeout" from="DamageTimeout" to="." method="_on_damage_timeout_timeout"]

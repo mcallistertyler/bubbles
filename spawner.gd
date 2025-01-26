@@ -2,6 +2,7 @@ extends Node
 
 @export var possible_suckable_nodes : Array[PackedScene]
 @export var possible_ouch_nodes : PackedScene
+@export var possible_waffles : PackedScene
 @export var spawn_marker_path_start : NodePath
 @export var spawn_marker_path_end : NodePath
 @export var gameplay_area_path : NodePath
@@ -13,12 +14,13 @@ extends Node
 @onready var spawn_timer : Timer = get_node("%SpawnTimer")
 @export var spawn_number_suckables : int = 5
 @export var spawn_number_ouchables : int = 3
-
+@export var waffle_rarity : float = 0.05
 var speed_increased_counter :int = 0
 var number_of_spawn_rows : int = 1
 var max_number_of_spawn_rows : int = 10
 var previous_suckable_position : Vector2 = Vector2.ZERO
 var previous_ouchable_position : Vector2 = Vector2.ZERO
+var previous_position_for_thing : Vector2 = Vector2.ZERO
 var x_distancer : float = 50.0
 var object_speed : float = 100.0
 
@@ -46,24 +48,30 @@ func spawn_objects(previous_position: Vector2, y_offset: float = 0.0) -> Vector2
 	var start_y_position = spawn_marker_start.global_position.y + y_offset
 	var random_position = Vector2(randf_range(spawn_marker_start.global_position.x - x_distancer, spawn_marker_end.global_position.x - x_distancer), start_y_position)
 	if abs(random_position.x - previous_position.x) <= x_distancer:
-		print("bro is too close")
 		random_position.x += 200.0
+	previous_position_for_thing = random_position
 	return random_position
 	
 func _on_spawn_timer_timeout() -> void:
 	object_speed = Autoload.get_current_object_speed()
 	var y_offset : float = 0.0
+	var spawn_waffle_roll = randf_range(0.0, 1.0)
 	# maybe dont do multiple rows
 	for i in range(1):
 		if i > 0:
 			y_offset -= 500.0
 		for j in range(spawn_number_suckables):
 			var suckable_instance = possible_suckable_nodes[randi() % possible_suckable_nodes.size()].instantiate()
-			suckable_instance.global_position = spawn_objects(previous_suckable_position, y_offset)
+			suckable_instance.global_position = spawn_objects(previous_position_for_thing, y_offset)
 			suckable_instance.get_child(0).current_speed = object_speed
 			gameplay_area.add_child(suckable_instance)
 		for k in range(spawn_number_ouchables):
 			var ouchable_instance = possible_ouch_nodes.instantiate()
-			ouchable_instance.global_position = spawn_objects(previous_ouchable_position, y_offset)
+			ouchable_instance.global_position = spawn_objects(previous_position_for_thing, y_offset)
 			ouchable_instance.current_speed = object_speed
 			gameplay_area.add_child(ouchable_instance)
+		if spawn_waffle_roll < waffle_rarity:
+			var waffle_instance = possible_waffles.instantiate()
+			waffle_instance.global_position = spawn_objects(previous_position_for_thing, y_offset)
+			waffle_instance.get_child(0).current_speed = object_speed
+			gameplay_area.add_child(waffle_instance)

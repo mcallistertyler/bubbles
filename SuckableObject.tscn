@@ -15,6 +15,7 @@ radius = 80.0
 [node name="SuckableObject" type="Node2D" groups=["suckable"]]
 script = ExtResource("1_tr1qw")
 current_speed = 300.0
+is_waffle = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true
