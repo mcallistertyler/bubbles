@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://cpsb4xxjeuye0"]
+
+[ext_resource type="Shader" path="res://Kaleidoscope.gdshader" id="1_bk17n"]
+[ext_resource type="Shader" path="res://Coolbackground.gdshader" id="1_k2820"]
+[ext_resource type="Shader" path="res://Pixel.gdshader" id="2_6t30j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jyflk"]
+shader = ExtResource("1_k2820")
+shader_parameter/brightness = 1.0
+shader_parameter/contrast = 30.0
+shader_parameter/saturation = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yvskf"]
+shader = ExtResource("1_bk17n")
+shader_parameter/color_speed = 0.01
+shader_parameter/brightness = 0.003
+shader_parameter/complexity = 1.0
+shader_parameter/periodicity = 8.0
+shader_parameter/fractal_force = 1.5
+shader_parameter/a = Vector3(0.9, 0.832, 0.92)
+shader_parameter/b = Vector3(1.5, 0.468, 0.573)
+shader_parameter/c = Vector3(0.534, 1.034, 1.222)
+shader_parameter/d = Vector3(5.992, 2.194, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n003g"]
+shader = ExtResource("2_6t30j")
+shader_parameter/size_x = 0.005
+shader_parameter/size_y = 0.005
+
+[node name="Coolbackground" type="Node2D"]
+material = SubResource("ShaderMaterial_jyflk")
+
+[node name="Kaleidoscope" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_yvskf")
+custom_minimum_size = Vector2(1080, 1920)
+offset_right = 108000.0
+offset_bottom = 192000.0
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="Pixel" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_n003g")
+custom_minimum_size = Vector2(1080, 1920)
+offset_right = 40.0
+offset_bottom = 40.0

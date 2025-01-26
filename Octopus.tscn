@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dvmmdittu5ybs"]
+
+[ext_resource type="PackedScene" uid="uid://bsfafcvjn51x7" path="res://SuckableObject.tscn" id="1_hfhdv"]
+[ext_resource type="Texture2D" uid="uid://b51b4c0s64x1y" path="res://assets/fish2.png" id="2_c66vr"]
+
+[node name="Octopus" type="Node2D"]
+
+[node name="SuckableObject" parent="." instance=ExtResource("1_hfhdv")]
+radius = 140.0
+points = 30
+scale_sprite = Vector2(10, 10)
+sprite_path = ExtResource("2_c66vr")
+current_speed = 100.0

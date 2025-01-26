@@ -1,0 +1,42 @@
+[gd_scene load_steps=9 format=3 uid="uid://bsfafcvjn51x7"]
+
+[ext_resource type="Script" path="res://suckable_object.gd" id="1_tr1qw"]
+[ext_resource type="Texture2D" uid="uid://6cyyd0djnb4h" path="res://icon.svg" id="1_u7d7o"]
+[ext_resource type="Script" path="res://suckable_object_area.gd" id="3_av7f2"]
+[ext_resource type="Script" path="res://audio_stream_player.gd" id="4_5ar1e"]
+[ext_resource type="AudioStream" uid="uid://bjstndlyaftx0" path="res://audio/scream1.mp3" id="5_nwnt0"]
+[ext_resource type="AudioStream" uid="uid://cd30iy78s4mff" path="res://audio/scream2.mp3" id="6_3vqda"]
+[ext_resource type="AudioStream" uid="uid://owt40va51dn1" path="res://audio/scream3.mp3" id="7_jf8vo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6o4xx"]
+resource_local_to_scene = true
+radius = 80.0
+
+[node name="SuckableObject" type="Node2D" groups=["suckable"]]
+script = ExtResource("1_tr1qw")
+current_speed = 300.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = ExtResource("1_u7d7o")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="Sprite2D"]
+
+[node name="Area2D" type="Area2D" parent="." groups=["suckable"]]
+script = ExtResource("3_av7f2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_6o4xx")
+debug_color = Color(0.838917, 0.170497, 0.838795, 0.42)
+
+[node name="CenterPoint" type="Marker2D" parent="."]
+unique_name_in_owner = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+volume_db = -10.0
+script = ExtResource("4_5ar1e")
+possible_audio = Array[AudioStreamMP3]([ExtResource("5_nwnt0"), ExtResource("6_3vqda"), ExtResource("7_jf8vo")])
+
+[connection signal="screen_exited" from="Sprite2D/VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

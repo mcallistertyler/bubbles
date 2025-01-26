@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c83kgk5b5csyh"]
+
+[ext_resource type="PackedScene" uid="uid://bsfafcvjn51x7" path="res://SuckableObject.tscn" id="2_kl0m7"]
+[ext_resource type="Texture2D" uid="uid://gvmig6854pj2" path="res://assets/fish1.png" id="3_b3hms"]
+
+[node name="Goldfish" type="Node2D"]
+
+[node name="SuckableObject" parent="." instance=ExtResource("2_kl0m7")]
+radius = 70.0
+scale_sprite = Vector2(5, 5)
+sprite_path = ExtResource("3_b3hms")
+current_speed = 100.0

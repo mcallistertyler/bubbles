@@ -1,0 +1,94 @@
+[gd_scene load_steps=9 format=3 uid="uid://dljv1peahyitd"]
+
+[ext_resource type="Texture2D" uid="uid://dang54uvv5ima" path="res://assets/danger-circle.png" id="1_c5wwu"]
+[ext_resource type="Script" path="res://ouch_object.gd" id="1_hykub"]
+[ext_resource type="Texture2D" uid="uid://0mpw3ic4nvjt" path="res://assets/spike.png" id="2_aitwk"]
+[ext_resource type="Script" path="res://ouch_object_area.gd" id="3_dupg5"]
+
+[sub_resource type="Animation" id="Animation_7k22x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CenterMarker:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_7s8qb"]
+resource_name = "spin"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CenterMarker:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_40mm1"]
+_data = {
+"RESET": SubResource("Animation_7k22x"),
+"spin": SubResource("Animation_7s8qb")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q56kv"]
+radius = 20.0
+
+[node name="OuchObject" type="Node2D"]
+scale = Vector2(2.5, 2.5)
+script = ExtResource("1_hykub")
+
+[node name="Body" type="Sprite2D" parent="."]
+texture = ExtResource("1_c5wwu")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_40mm1")
+}
+autoplay = "spin"
+speed_scale = 2.0
+
+[node name="CenterMarker" type="Marker2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="CenterMarker"]
+position = Vector2(0, -27)
+texture = ExtResource("2_aitwk")
+
+[node name="Sprite2D2" type="Sprite2D" parent="CenterMarker"]
+position = Vector2(27, 0)
+rotation = 1.5708
+texture = ExtResource("2_aitwk")
+
+[node name="Sprite2D3" type="Sprite2D" parent="CenterMarker"]
+position = Vector2(0, 27)
+rotation = -3.14159
+texture = ExtResource("2_aitwk")
+
+[node name="Sprite2D4" type="Sprite2D" parent="CenterMarker"]
+position = Vector2(-27, 0)
+rotation = -1.5708
+texture = ExtResource("2_aitwk")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("3_dupg5")
+parent_node = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_q56kv")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, -25.6)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

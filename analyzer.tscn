@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://dstnlhot3hnbu"]
+
+[ext_resource type="Script" path="res://analyzer.gd" id="1_q151x"]
+[ext_resource type="Shader" path="res://analyzer.gdshader" id="2_rytrp"]
+[ext_resource type="PackedScene" uid="uid://cvxxq3i1r1bgc" path="res://Microphone.tscn" id="3_0sd15"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v4p1u"]
+shader = ExtResource("2_rytrp")
+shader_parameter/freq_data = null
+
+[node name="Analyzer" type="Node2D"]
+script = ExtResource("1_q151x")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_v4p1u")
+offset_right = 1079.0
+offset_bottom = 1915.0
+
+[node name="Microphone" parent="." instance=ExtResource("3_0sd15")]

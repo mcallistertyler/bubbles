@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb2g0v16l11r8"]
+
+[ext_resource type="PackedScene" uid="uid://cvxxq3i1r1bgc" path="res://Microphone.tscn" id="1_1so3l"]
+[ext_resource type="Script" path="res://action.gd" id="1_2655i"]
+
+[node name="Action" type="Node2D"]
+script = ExtResource("1_2655i")
+
+[node name="Microphone" parent="." instance=ExtResource("1_1so3l")]
+unique_name_in_owner = true
+
+[node name="Button" type="Button" parent="Microphone"]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Record Test"
+
+[connection signal="pressed" from="Microphone/Button" to="." method="_on_button_pressed"]

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://byo66jepmcpvx"]
+
+[ext_resource type="PackedScene" uid="uid://bsfafcvjn51x7" path="res://SuckableObject.tscn" id="1_xorhc"]
+[ext_resource type="Texture2D" uid="uid://b665nvyelhsgk" path="res://assets/fish3.png" id="2_7wb5t"]
+
+[node name="Crab" type="Node2D"]
+
+[node name="SuckableObject" parent="." instance=ExtResource("1_xorhc")]
+scale_sprite = Vector2(5, 5)
+sprite_path = ExtResource("2_7wb5t")
+current_speed = 100.0

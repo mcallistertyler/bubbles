@@ -1,0 +1,30 @@
+[gd_resource type="AudioBusLayout" load_steps=4 format=3 uid="uid://2lxrj2213en6"]
+
+[sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_qw2rm"]
+resource_name = "SpectrumAnalyzer"
+
+[sub_resource type="AudioEffectRecord" id="AudioEffectRecord_lwcop"]
+resource_name = "Record"
+
+[sub_resource type="AudioEffectSpectrumAnalyzer" id="AudioEffectSpectrumAnalyzer_nor7p"]
+resource_name = "SpectrumAnalyzer"
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectSpectrumAnalyzer_qw2rm")
+bus/0/effect/0/enabled = true
+bus/1/name = &"RecordOutput"
+bus/1/solo = false
+bus/1/mute = true
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/2/name = &"Record"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = -0.030508
+bus/2/send = &"RecordOutput"
+bus/2/effect/0/effect = SubResource("AudioEffectRecord_lwcop")
+bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource("AudioEffectSpectrumAnalyzer_nor7p")
+bus/2/effect/1/enabled = true
